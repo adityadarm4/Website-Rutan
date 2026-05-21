@@ -32,7 +32,50 @@
         <p>Prosedur penitipan barang bawaan untuk Warga Binaan</p>
       </div>
     </section>
-
+    <!-- Cukup Sisipkan Ini di Bagian Konten yang Kosong -->
+    <div class="container mt-5" style="padding: 20px">
+      <h3
+        style="
+          text-align: center;
+          margin-bottom: 20px;
+          font-weight: bold;
+          color: #002855;
+        "
+      >
+        📦 Status Penitipan Barang Terbaru
+      </h3>
+      <div style="overflow-x: auto">
+        <!-- Supaya tabelnya rapi saat dibuka di HP -->
+        <table
+          border="1"
+          style="
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            border: 1px solid #ddd;
+          "
+        >
+          <thead>
+            <tr style="background-color: #0d6efd; color: white">
+              <th style="padding: 12px">Tanggal</th>
+              <th style="padding: 12px">Pengirim</th>
+              <th style="padding: 12px">Nama Narapidana</th>
+              <th style="padding: 12px">Status</th>
+            </tr>
+          </thead>
+          <tbody id="tabel-barang">
+            <tr>
+              <td
+                colspan="4"
+                style="text-align: center; padding: 15px; color: #666"
+              >
+                Memuat data terbaru...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <section class="page-content">
       <h2>Ketentuan Makanan/Barang yang Diizinkan</h2>
       <ul>
@@ -40,7 +83,7 @@
           Makanan matang yang diletakkan dalam wadah transparan (plastik
           bening).
         </li>
-        <li>Pakaian maksimal 3 lembar per penitipan.</li>
+        <li>Pakaian maksimal 2 stel (celana pendek dan tidak berbahan jeans) per penitipan.</li>
         <li>Alat mandi (sabun cair transparan, pasta gigi, dll).</li>
       </ul>
 
@@ -65,7 +108,7 @@
         </li>
         <li>
           Barang yang lulus sensor akan di-<i>packing</i> dan diberikan nama
-          tujuan WBP.
+          tujuan Warga Binaan.
         </li>
         <li>Petugas mendistribusikan ke blok hunian.</li>
       </ol>
@@ -89,5 +132,50 @@
       </div>
     </footer>
     <script src="script.js"></script>
+    <!-- Taruh ini di paling bawah halaman, sebelum tag </body> -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // Ingat untuk mengganti URL & KEY ini dengan proyek Supabase Anda sendiri
+      const SUPABASE_URL = "https://tjzrsvwckvabnjxcypdz.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_R6o0pLyEmXuqOOB80JnVuA_awEn_qBl"; // Sesuaikan dengan key Anda
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); // <--- Ubah nama variabelnya jadi supabaseClient agar aman
+
+      async function ambilDataBarang() {
+        const { data, error } = await supabaseClient // <--- Sesuaikan di sini juga
+          .from("info_barang")
+          .select("*")
+          .order("id", { ascending: false });
+
+        const tbody = document.getElementById("tabel-barang");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        if (error) {
+          console.error("Detail Eror Supabase:", error);
+          tbody.innerHTML = `<tr><td colspan="4" style="color:red; text-align:center; padding: 15px;">Gagal memuat data.</td></tr>`;
+          return;
+        }
+
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 15px;">Belum ada info pengiriman barang hari ini.</td></tr>`;
+          return;
+        }
+
+        data.forEach((barang) => {
+          const row = `
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 12px;">${barang.tanggal_diterima || "-"}</td>
+                    <td style="padding: 12px;">${barang.nama_pengirim || "-"}</td>
+                    <td style="padding: 12px; font-weight: 500;">${barang.nama_napi || "-"}</td>
+                    <td style="padding: 12px;"><span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: bold;">${barang.status || "Selesai"}</span></td>
+                </tr>
+            `;
+          tbody.innerHTML += row;
+        });
+      }
+
+      // Jalankan fungsi
+      ambilDataBarang();
+    </script>
   </body>
 </html>

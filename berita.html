@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pusat Informasi & Berita - Rutan Kota Agung</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+      }
+      .navbar {
+        background-color: #002855;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 22px;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      .grid-berita {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+      }
+      .card-berita {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        border-top: 4px solid #002855;
+        transition: transform 0.2s;
+      }
+      .card-berita:hover {
+        transform: translateY(-5px);
+      }
+      .foto-berita {
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        background-color: #eaeded;
+      }
+      .card-body {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
+      }
+      .judul {
+        font-size: 19px;
+        font-weight: bold;
+        color: #222;
+        margin: 0 0 10px 0;
+        line-height: 1.4;
+      }
+      .tanggal {
+        font-size: 12px;
+        color: #777;
+        margin-bottom: 15px;
+        font-style: italic;
+      }
+      .isi {
+        font-size: 14.5px;
+        color: #444;
+        line-height: 1.6;
+        text-align: justify;
+        white-space: pre-line;
+        margin: 0;
+      }
+      .loading {
+        text-align: center;
+        color: #666;
+        font-size: 16px;
+        margin-top: 50px;
+      }
+      /* Style Tambahan untuk Tombol Kembali */
+      .btn-kembali {
+        background-color: #ffffff;
+        color: #002855 !important;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .btn-kembali:hover {
+        background-color: #f0f4f8;
+        transform: translateX(
+          -3px
+        ); /* Efek sedikit bergeser ke kiri saat didekati */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">📰 PUSAT INFORMASI & BERITA RUTAN KOTA AGUNG</div>
+    <div class="navbar">
+      <div
+        style="
+          max-width: 1100px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 20px;
+        "
+      >
+        <a href="index.html" class="btn-kembali">⬅️ Kembali Utama</a>
+        <div style="flex-grow: 1; text-align: center; margin-right: 120px">
+          📰 PUSAT INFORMASI & BERITA
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div id="loading-berita" class="loading">
+        ⏳ Memuat berita dan informasi terbaru...
+      </div>
+
+      <div class="grid-berita" id="konten-berita"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      // Konfigurasi Server Supabase Anda
+      const SUPABASE_URL = "https://tjzrsvwckvabnjxcypdz.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_R6o0pLyEmXuqOOB80JnVuA_awEn_qBl"; // Menggunakan API Key valid Anda
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Fungsi Mengambil Berita dari Tabel Supabase
+      async function ambilBerita() {
+        // KODE BARU YANG BENAR:
+        const { data, error } = await supabaseClient
+          .from("info_berita")
+          .select("*")
+          .order("tanggal_rilis", { ascending: false }); // 👈 Diurutkan berdasarkan tanggal rilis
+
+        const container = document.getElementById("konten-berita");
+        const loading = document.getElementById("loading-berita");
+
+        if (loading) loading.style.display = "none";
+
+        if (error) {
+          console.error("Detail Eror Berita:", error);
+          container.innerHTML = `<p style="text-align:center; color:red; grid-column: 1/-1;">Gagal memuat berita. Cek apakah tabel 'info_berita' sudah dibuat.</p>`;
+          return;
+        }
+
+        if (data.length === 0) {
+          container.innerHTML = `<p style="text-align:center; color:#666; grid-column: 1/-1; margin-top: 30px;">Belum ada berita atau informasi terbaru yang dipublikasikan.</p>`;
+          return;
+        }
+
+        // Memulai perulangan cetak data ke dalam bentuk Kartu (Card)
+        data.forEach((berita) => {
+          // Atur format tanggal Indonesia (Contoh: 20 Mei 2026)
+          const tgl = new Date(berita.tanggal_rilis).toLocaleDateString(
+            "id-ID",
+            {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            },
+          );
+
+          // Jika url_gambar di database kosong, tag gambar tidak akan dimunculkan
+          const komponenGambar = berita.url_gambar
+            ? `<img src="${berita.url_gambar}" class="foto-berita" alt="Foto Kegiatan">`
+            : "";
+
+          const card = `
+                    <div class="card-berita">
+                        ${komponenGambar}
+                        <div class="card-body">
+                            <div>
+                                <h3 class="judul">${berita.judul}</h3>
+                                <div class="tanggal">📅 ${tgl}</div>
+                                <p class="isi">${berita.isi_berita}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+          container.innerHTML += card;
+        });
+      }
+
+      // Jalankan mesin pencari berita secara otomatis
+      ambilBerita();
+    </script>
+  </body>
+</html>
