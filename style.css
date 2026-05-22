@@ -463,4 +463,26 @@ footer {
   .features-grid {
     grid-template-columns: 1fr;
   }
+  .btn-admin {
+    background-color: #4a5568;
+    color: #ffffff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+  }
+  .btn-admin:hover {
+    background-color: #2d3748;
+  }
+  .nav-links .admin-mobile {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .nav-links .admin-mobile {
+      display: block;
+    }
+  }
 }
