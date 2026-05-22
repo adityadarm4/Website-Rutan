@@ -32,7 +32,7 @@
         <p>Prosedur penitipan barang bawaan untuk Warga Binaan</p>
       </div>
     </section>
-    <!-- Cukup Sisipkan Ini di Bagian Konten yang Kosong -->
+
     <div class="container mt-5" style="padding: 20px">
       <h3
         style="
@@ -45,7 +45,6 @@
         📦 Status Penitipan Barang Terbaru
       </h3>
       <div style="overflow-x: auto">
-        <!-- Supaya tabelnya rapi saat dibuka di HP -->
         <table
           border="1"
           style="
@@ -57,7 +56,7 @@
         >
           <thead>
             <tr style="background-color: #0d6efd; color: white">
-              <th style="padding: 12px">Tanggal</th>
+              <th style="padding: 12px">Tanggal & Jam</th>
               <th style="padding: 12px">Pengirim</th>
               <th style="padding: 12px">Nama Narapidana</th>
               <th style="padding: 12px">Status</th>
@@ -76,6 +75,7 @@
         </table>
       </div>
     </div>
+
     <section class="page-content">
       <h2>Ketentuan Makanan/Barang yang Diizinkan</h2>
       <ul>
@@ -83,13 +83,16 @@
           Makanan matang yang diletakkan dalam wadah transparan (plastik
           bening).
         </li>
-        <li>Pakaian maksimal 2 stel (celana pendek dan tidak berbahan jeans) per penitipan.</li>
+        <li>
+          Pakaian maksimal 2 stel (celana pendek dan tidak berbahan jeans) per
+          penitipan.
+        </li>
         <li>Alat mandi (sabun cair transparan, pasta gigi, dll).</li>
       </ul>
 
       <h2>Barang yang DILARANG Keras</h2>
       <ul>
-        <li>Narkotika, Psikotropika, dan Obat-obatan terlarang.</li>
+        <li>NARKOTIKA, PSIKOTROPIKA, DAN OBAT-OBATAN TERLARANG.</li>
         <li>Alat komunikasi (Handphone, charger, headset).</li>
         <li>
           Senjata tajam, senjata api, atau benda yang terbuat dari besi/kaca.
@@ -131,17 +134,51 @@
         </p>
       </div>
     </footer>
+
     <script src="script.js"></script>
-    <!-- Taruh ini di paling bawah halaman, sebelum tag </body> -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // Ingat untuk mengganti URL & KEY ini dengan proyek Supabase Anda sendiri
       const SUPABASE_URL = "https://tjzrsvwckvabnjxcypdz.supabase.co";
-      const SUPABASE_KEY = "sb_publishable_R6o0pLyEmXuqOOB80JnVuA_awEn_qBl"; // Sesuaikan dengan key Anda
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); // <--- Ubah nama variabelnya jadi supabaseClient agar aman
+      const SUPABASE_KEY = "sb_publishable_R6o0pLyEmXuqOOB80JnVuA_awEn_qBl";
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Format jam dari timetz (contoh: "14:30:00+07" -> "14:30")
+      function formatJam(jamString) {
+        if (!jamString) return "-";
+        // Menghilangkan penanda timezone jika ada, menampilkan waktu bersih jam:menit:detik
+        return jamString.split("+")[0];
+      }
+
+      // Format tanggal + jam jadi satu
+      function formatTanggalJam(tanggal, jam) {
+        if (!tanggal) return "-";
+
+        // Format tanggal ke Indonesia
+        const tgl = new Date(tanggal).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        });
+
+        const jamFormatted = formatJam(jam);
+        return `${tgl} • ${jamFormatted}`;
+      }
+
+      // Format status dengan warna
+      function formatStatus(status) {
+        if (
+          status === "Sudah Diserahkan ke Napi" ||
+          status === "Sudah Diserahkan ke Narapidana"
+        ) {
+          return '<span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: bold;">Selesai</span>';
+        } else if (status === "Diproses / Diperiksa" || status === "Diproses") {
+          return '<span style="background-color: #fff3cd; color: #856404; padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: bold;">Diproses</span>';
+        }
+        return `<span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: bold;">${status}</span>`;
+      }
 
       async function ambilDataBarang() {
-        const { data, error } = await supabaseClient // <--- Sesuaikan di sini juga
+        const { data, error } = await supabaseClient
           .from("info_barang")
           .select("*")
           .order("id", { ascending: false });
@@ -162,12 +199,17 @@
         }
 
         data.forEach((barang) => {
+          const tglJam = formatTanggalJam(
+            barang.tanggal_diterima,
+            barang.jam, // 👈 Diganti jadi jam agar pas dengan Supabase
+          );
+          const statusFormatted = formatStatus(barang.status);
           const row = `
                 <tr style="border-bottom: 1px solid #ddd;">
-                    <td style="padding: 12px;">${barang.tanggal_diterima || "-"}</td>
+                    <td style="padding: 12px;">${tglJam}</td>
                     <td style="padding: 12px;">${barang.nama_pengirim || "-"}</td>
                     <td style="padding: 12px; font-weight: 500;">${barang.nama_napi || "-"}</td>
-                    <td style="padding: 12px;"><span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 14px; font-weight: bold;">${barang.status || "Selesai"}</span></td>
+                    <td style="padding: 12px;">${statusFormatted}</td>
                 </tr>
             `;
           tbody.innerHTML += row;

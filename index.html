@@ -9,8 +9,34 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <!-- Tambahan CSS inline agar tombol admin memiliki gaya dasar jika belum diatur di style.css -->
+    <style>
+      .btn-admin {
+        background-color: #4a5568;
+        color: #ffffff;
+        padding: 10px 15px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 14px;
+        margin-left: 10px;
+        transition: background-color 0.3s ease;
+      }
+      .btn-admin:hover {
+        background-color: #2d3748;
+      }
+      .nav-links .admin-mobile {
+        display: none;
+      }
+      @media (max-width: 768px) {
+        .nav-links .admin-mobile {
+          display: block;
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Bagian Navigasi -->
     <!-- Bagian Navigasi -->
     <header class="navbar" id="navbar">
       <div class="container nav-container">
@@ -29,11 +55,23 @@
                 text-decoration: none;
                 font-weight: bold;
               "
-              >Berita Terbaru</a
             >
+              Berita Terbaru
+            </a>
+          </li>
+          <!-- Tautan Admin khusus menu mobile (muncul saat layar kecil) -->
+          <li class="mobile-only">
+            <a href="login.html" style="color: #dc2626">Login Admin</a>
           </li>
         </ul>
-        <a href="#layanan" class="btn-primary desktop-btn">Daftar Layanan</a>
+
+        <!-- Area Tombol Aksi Kanan (Desktop) -->
+        <div class="nav-actions">
+          <a href="#layanan" class="btn-primary desktop-btn">Daftar Layanan</a>
+          <a href="petugas-ruka.html" class="btn-admin desktop-btn"
+            >Login Admin</a
+          >
+        </div>
 
         <div class="hamburger">
           <span class="bar"></span>
@@ -146,15 +184,15 @@
             <div class="icon">📜</div>
             <h3>Layanan Integrasi</h3>
             <p>
-              Pengurusan hak-hak Warga Binaan seperti Pembebasan Bersyarat (PB) dan Cuti
-              Bersyarat (CB).
+              Pengurusan hak-hak Warga Binaan seperti Pembebasan Bersyarat (PB)
+              dan Cuti Bersyarat (CB).
             </p>
             <a href="layanan-integrasi.html" class="btn-detail"
               >Lihat Detail &rarr;</a
             >
           </div>
 
-          <!-- Layanan 5 (Pengganti Klinik Kesehatan) -->
+          <!-- Layanan 5 -->
           <div class="feature-card">
             <div class="icon">📝</div>
             <h3>Izin Luar Biasa</h3>
@@ -199,6 +237,27 @@
             <p>📞 +62823-7916-1752</p>
           </div>
         </div>
+
+        <!-- Tambahan Tautan Admin di bagian bawah Footer -->
+        <div
+          style="
+            margin-top: 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+          "
+        >
+          <a
+            href="login.html"
+            style="
+              color: rgba(255, 255, 255, 0.6);
+              text-decoration: none;
+              font-size: 13px;
+            "
+            >Login Admin Sistem</a
+          >
+        </div>
+
         <p class="copyright">
           &copy; 2026 Rumah Tahanan Negara Kelas IIB Kota Agung. Hak Cipta
           Dilindungi.

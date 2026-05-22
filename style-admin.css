@@ -1,0 +1,191 @@
+/* ==========================================================================
+   STYLE UTAMA & LAYOUT
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+  margin: 0;
+  padding: 20px;
+}
+
+.main-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* KONTROL HIKING/SINKRONISASI HALAMAN AUTH */
+#halaman-login {
+  max-width: 450px;
+  margin: 60px auto;
+  display: none; /* Diatur otomatis lewat JavaScript */
+}
+
+#halaman-admin {
+  display: none; /* Diatur otomatis lewat JavaScript */
+}
+
+/* ==========================================================================
+   KOMPONEN NAVBAR
+   ========================================================================== */
+.navbar-admin {
+  background-color: #002855;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   CARD & FORM CONTROL
+   ========================================================================== */
+.card-form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+.card-form h3 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #111;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: #002855;
+}
+
+select.form-control {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+
+textarea.form-control {
+  font-family: sans-serif;
+  resize: vertical;
+}
+
+small {
+  color: #666;
+  display: block;
+  margin-top: 5px;
+}
+
+/* ==========================================================================
+   TOMBOL-TOMBOL (BUTTONS)
+   ========================================================================== */
+.btn-submit {
+  width: 100%;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-submit:hover {
+  opacity: 0.9;
+}
+
+.btn-blue {
+  background-color: #0066ff;
+}
+
+.btn-green {
+  background-color: #28a745;
+}
+
+.btn-logout {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: #bd2130;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+.btn-delete:hover {
+  background-color: #bd2130;
+}
+
+/* ==========================================================================
+   TABEL RESPONSIVE
+   ========================================================================== */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 15px;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+th {
+  background-color: #f8f9fa;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Style khusus untuk Checkbox di dalam tabel */
+input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}

@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Admin - Rutan Kota Agung</title>
+    <link rel="stylesheet" href="style-admin.css" />
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <!-- HALAMAN LOGIN (Awal) -->
+      <div
+        id="halaman-login"
+        class="card-form"
+        style="max-width: 450px; margin: 60px auto; display: none"
+      >
+        <h2 style="text-align: center; margin-bottom: 25px; color: #002855">
+          🔐 Login Petugas Rutan
+        </h2>
+        <form id="formLogin">
+          <div class="form-group">
+            <input
+              type="email"
+              id="loginEmail"
+              class="form-control"
+              placeholder="Email Resmi Petugas"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="password"
+              id="loginPassword"
+              class="form-control"
+              placeholder="Password"
+              required
+            />
+          </div>
+          <button type="submit" id="btnLogin" class="btn-submit btn-blue">
+            Masuk ke Sistem
+          </button>
+        </form>
+      </div>
+
+      <!-- HALAMAN PANEL ADMIN (Hanya tampil setelah login) -->
+      <div id="halaman-admin" style="display: none">
+        <div
+          class="navbar-admin"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <span>🛡️ PANEL INPUT PETUGAS RUTAN KOTA AGUNG</span>
+          <button class="btn-logout" onclick="aksiLogout()">🚪 Keluar</button>
+        </div>
+
+        <!-- FORM TAMBAH AKUN ADMIN BARU (Hanya bisa diakses admin yang login) -->
+        <div class="card-form" style="border-left: 5px solid #28a745">
+          <h3>🔑 Tambah Akun Petugas Rutan Baru</h3>
+          <p style="font-size: 13px; color: #666; margin-bottom: 15px">
+            Gunakan formulir ini untuk mendaftarkan akun petugas baru ke dalam
+            sistem.
+          </p>
+          <form id="formTambahAdmin">
+            <div class="form-group">
+              <input
+                type="email"
+                id="regEmail"
+                class="form-control"
+                placeholder="Email Resmi Calon Petugas"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="password"
+                id="regPassword"
+                class="form-control"
+                placeholder="Password Baru (Minimal 6 Karakter)"
+                minlength="6"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              id="btnTambahAdmin"
+              class="btn-submit btn-green"
+              style="background-color: #28a745; border-color: #28a745"
+            >
+              ➕ Daftarkan Petugas Baru
+            </button>
+          </form>
+        </div>
+
+        <!-- FORM INPUT BARANG -->
+        <div class="card-form">
+          <h3>Input Bukti Serah Terima Barang (WA Otomatis)</h3>
+          <form id="formBarang">
+            <div class="form-group">
+              <input
+                type="text"
+                id="namaNapi"
+                class="form-control"
+                placeholder="Nama Narapidana (WBP)"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                id="namaPengirim"
+                class="form-control"
+                placeholder="Nama Pengirim / Keluarga"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="tel"
+                id="noWaKeluarga"
+                class="form-control"
+                placeholder="No WhatsApp Keluarga (Contoh: 08123456xxx)"
+                required
+              />
+              <small
+                >*Pastikan nomor aktif agar notifikasi WA berhasil
+                terkirim</small
+              >
+            </div>
+            <div class="form-group">
+              <label
+                style="
+                  font-weight: 500;
+                  display: block;
+                  margin-bottom: 5px;
+                  font-size: 14px;
+                  color: #333;
+                "
+                >Foto Bukti Penerimaan Barang oleh WBP:</label
+              >
+              <input
+                type="file"
+                id="fotoBuktiBarang"
+                class="form-control"
+                accept="image/*"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              id="btnKirimBarang"
+              class="btn-submit btn-blue"
+            >
+              🚀 Simpan & Kirim WhatsApp
+            </button>
+          </form>
+        </div>
+
+        <!-- FORM INPUT BERITA -->
+        <div class="card-form">
+          <h3>📰 Input Berita Rutan Terbaru</h3>
+          <form id="formBerita">
+            <div class="form-group">
+              <input
+                type="text"
+                id="judulBerita"
+                class="form-control"
+                placeholder="Judul Berita Terbaru"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label
+                style="
+                  font-weight: 500;
+                  display: block;
+                  margin-bottom: 5px;
+                  font-size: 14px;
+                  color: #333;
+                "
+                >Upload Foto Kegiatan dari Perangkat:</label
+              >
+              <input
+                type="file"
+                id="fileGambarBerita"
+                class="form-control"
+                accept="image/*"
+              />
+            </div>
+            <div class="form-group">
+              <textarea
+                id="isiBerita"
+                class="form-control"
+                placeholder="Tulis isi berita lengkap di sini..."
+                rows="5"
+                required
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              id="btnKirimBerita"
+              class="btn-submit btn-green"
+            >
+              📢 Publikasikan Berita
+            </button>
+          </form>
+        </div>
+
+        <!-- TABEL HISTORI BARANG -->
+        <div class="card-form">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 15px;
+            "
+          >
+            <h3 style="font-size: 18px; margin: 0">
+              📋 Histori Pengiriman Barang
+            </h3>
+            <button
+              type="button"
+              onclick="hapusBarangTerpilih()"
+              style="
+                background-color: #dc3545;
+                color: white;
+                border: none;
+                padding: 8px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 13px;
+              "
+            >
+              🗑️ Hapus yang Dipilih
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr style="background-color: #f8f9fa">
+                  <th style="padding: 10px; width: 40px; text-align: center">
+                    <input
+                      type="checkbox"
+                      id="pilih-semua"
+                      onclick="togglePilihSemua(this)"
+                      style="transform: scale(1.2); cursor: pointer"
+                    />
+                  </th>
+                  <th style="padding: 10px">Tanggal/Jam</th>
+                  <th style="padding: 10px">Pengirim</th>
+                  <th style="padding: 10px">Nama Napi</th>
+                  <th style="padding: 10px">WA Keluarga</th>
+                  <th style="padding: 10px">Status</th>
+                  <th style="padding: 10px; text-align: center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tabel-admin-barang">
+                <tr>
+                  <td
+                    colspan="7"
+                    style="text-align: center; color: #666; padding: 15px"
+                  >
+                    Memuat data...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TABEL KELOLA BERITA -->
+        <div class="card-form">
+          <h3 style="font-size: 18px">📰 Kelola & Hapus Berita</h3>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Judul Berita</th>
+                  <th>Tanggal Rilis</th>
+                  <th style="text-align: center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tabel-admin-berita">
+                <tr>
+                  <td
+                    colspan="3"
+                    style="text-align: center; color: #666; padding: 15px"
+                  >
+                    Memuat berita...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+      const SUPABASE_URL = "https://tjzrsvwckvabnjxcypdz.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_R6o0pLyEmXuqOOB80JnVuA_awEn_qBl";
+
+      // Klien utama untuk mengelola sesi admin
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Klien sekunder khusus untuk mendaftarkan akun baru tanpa mengganggu sesi admin yang sedang aktif
+      const supabaseRegisterClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+        {
+          auth: {
+            persistSession: false, // Mencegah sesi admin ter-logout saat mendaftarkan akun baru
+            autoRefreshToken: false,
+            detectSessionInUrl: false,
+          },
+        },
+      );
+
+      // ==========================================
+      // LOGIKA CEK STATUS LOGIN (AUTH)
+      // ==========================================
+      async function cekStatusSesi() {
+        const {
+          data: { session },
+        } = await supabaseClient.auth.getSession();
+
+        if (session) {
+          document.getElementById("halaman-login").style.display = "none";
+          document.getElementById("halaman-admin").style.display = "block";
+          muatDataAdminBarang();
+          muatDataAdminBerita();
+        } else {
+          document.getElementById("halaman-login").style.display = "block";
+          document.getElementById("halaman-admin").style.display = "none";
+        }
+      }
+
+      cekStatusSesi();
+
+      // Proses Form Login Petugas
+      const formLogin = document.getElementById("formLogin");
+      formLogin.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById("btnLogin");
+        btn.innerText = "⏳ Memverifikasi...";
+        btn.disabled = true;
+
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+
+        btn.innerText = "Masuk ke Sistem";
+        btn.disabled = false;
+
+        if (error) {
+          alert("❌ Gagal Masuk: " + error.message);
+        } else {
+          alert("🔑 Berhasil masuk! Selamat bertugas.");
+          formLogin.reset();
+          cekStatusSesi();
+        }
+      });
+
+      // ==========================================
+      // LOGIKA REGISTRASI PETUGAS BARU (AMAN)
+      // ==========================================
+      const formTambahAdmin = document.getElementById("formTambahAdmin");
+      formTambahAdmin.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById("btnTambahAdmin");
+        btn.innerText = "⏳ Mendaftarkan...";
+        btn.disabled = true;
+
+        const email = document.getElementById("regEmail").value;
+        const password = document.getElementById("regPassword").value;
+
+        // Menggunakan supabaseRegisterClient agar sesi admin yang aktif tidak terganggu/ter-logout
+        const { data, error } = await supabaseRegisterClient.auth.signUp({
+          email: email,
+          password: password,
+        });
+
+        btn.innerText = "➕ Daftarkan Petugas Baru";
+        btn.disabled = false;
+
+        if (error) {
+          alert("❌ Gagal membuat akun: " + error.message);
+        } else {
+          alert(
+            "🎉 Sukses mendaftarkan petugas baru ke Supabase Authentication!\nEmail: " +
+              email,
+          );
+          formTambahAdmin.reset();
+        }
+      });
+
+      // Fungsi Logout
+      async function aksiLogout() {
+        if (confirm("Apakah Anda ingin keluar dari panel admin?")) {
+          const { error } = await supabaseClient.auth.signOut();
+
+          if (error) {
+            alert("Gagal keluar: " + error.message);
+          } else {
+            alert("🔒 Anda telah keluar.");
+            window.location.href = "index.html";
+          }
+        }
+      }
+
+      // FITUR KONTROL CHECKBOX
+      function togglePilihSemua(master) {
+        const checkboxes = document.querySelectorAll(".cb-barang");
+        checkboxes.forEach((cb) => (cb.checked = master.checked));
+      }
+
+      // PROSES HAPUS MASSAL
+      async function hapusBarangTerpilih() {
+        const checkboxesTerpilih =
+          document.querySelectorAll(".cb-barang:checked");
+        if (checkboxesTerpilih.length === 0) {
+          alert("❌ Silakan centang data yang ingin dihapus terlebih dahulu!");
+          return;
+        }
+
+        const daftarId = Array.from(checkboxesTerpilih).map((cb) => cb.value);
+
+        if (
+          !confirm(
+            `Apakah Anda yakin ingin menghapus ${daftarId.length} data terpilih?`,
+          )
+        ) {
+          return;
+        }
+
+        try {
+          const { error } = await supabaseClient
+            .from("info_barang")
+            .delete()
+            .in("id", daftarId);
+
+          if (error) throw error;
+
+          alert(`🗑️ Sukses! Berhasil menghapus ${daftarId.length} data.`);
+          document.getElementById("pilih-semua").checked = false;
+          muatDataAdminBarang();
+        } catch (err) {
+          alert("Gagal menghapus data: " + err.message);
+        }
+      }
+
+      // AMBIL DATA KELOLA BARANG
+      async function muatDataAdminBarang() {
+        const { data, error } = await supabaseClient
+          .from("info_barang")
+          .select("*");
+        const tbody = document.getElementById("tabel-admin-barang");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+
+        if (error) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 15px; color: red;">Gagal memuat data.</td></tr>`;
+          return;
+        }
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 15px; color: #666;">Belum ada data barang.</td></tr>`;
+          return;
+        }
+
+        data.sort((a, b) => {
+          const tglA = a.tanggal_diterima || a.tanggal;
+          const tglB = b.tanggal_diterima || b.tanggal;
+          return new Date(tglB) - new Date(tglA);
+        });
+
+        data.forEach((barang) => {
+          const statusHtml = `<span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 13px; font-weight: bold;">Selesai</span>`;
+          const jamTampil = barang.jam_diterima || barang.jam || "-";
+          const waTampil = barang.no_wa_keluarga || barang.no_hp || "-";
+          const tglTampil = barang.tanggal_diterima || barang.tanggal || "-";
+
+          const row = `
+      <tr style="border-bottom: 1px solid #eee;">
+          <td style="padding: 10px; text-align: center;">
+              <input type="checkbox" class="cb-barang" value="${barang.id}" style="transform: scale(1.2); cursor: pointer;">
+          </td>
+          <td style="padding: 10px;">${tglTampil}<br><small style="color:#666">${jamTampil}</small></td>
+          <td style="padding: 10px;">${barang.nama_pengirim || "-"}</td>
+          <td style="padding: 10px; font-weight: bold;">${barang.nama_napi || "-"}</td>
+          <td style="padding: 10px;">${waTampil}</td>
+          <td style="padding: 10px;">${statusHtml}</td>
+          <td style="padding: 10px; text-align: center;">
+              <button onclick="hapusBarang('${barang.id}', '${barang.nama_napi}')" style="background-color: #ffc107; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Hapus</button>
+          </td>
+      </tr>
+    `;
+          tbody.innerHTML += row;
+        });
+      }
+
+      // PROSES FORM BARANG + WA
+      const formBarang = document.getElementById("formBarang");
+      formBarang.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById("btnKirimBarang");
+        btn.innerText = "⏳ Mengunggah Foto Bukti...";
+        btn.disabled = true;
+
+        const nama_napi = document.getElementById("namaNapi").value;
+        const nama_pengirim = document.getElementById("namaPengirim").value;
+        let no_wa = document.getElementById("noWaKeluarga").value.trim();
+        const fileInput = document.getElementById("fotoBuktiBarang");
+
+        const waktuSekarang = new Date();
+        const tanggal_diterima = waktuSekarang.toISOString().split("T")[0];
+        const jam = waktuSekarang.toTimeString().split(" ")[0];
+
+        if (no_wa.startsWith("0")) {
+          no_wa = "62" + no_wa.slice(1);
+        }
+
+        const file = fileInput.files[0];
+        const namaFileUnik = `bukti_${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
+
+        const { data: uploadData, error: uploadError } =
+          await supabaseClient.storage
+            .from("bukti_barang")
+            .upload(namaFileUnik, file);
+
+        if (uploadError) {
+          alert("Gagal mengupload foto: " + uploadError.message);
+          btn.innerText = "🚀 Simpan & Kirim WhatsApp";
+          btn.disabled = false;
+          return;
+        }
+
+        const { data: linkData } = supabaseClient.storage
+          .from("bukti_barang")
+          .getPublicUrl(namaFileUnik);
+        const foto_bukti = linkData.publicUrl;
+
+        btn.innerText = "⏳ Mencatat ke Database...";
+
+        const { error: insertError } = await supabaseClient
+          .from("info_barang")
+          .insert([
+            {
+              nama_pengirim,
+              nama_napi,
+              status: "Sudah Diserahkan ke Napi",
+              tanggal_diterima,
+              jam: jam,
+              no_wa_keluarga: no_wa,
+              foto_bukti,
+            },
+          ]);
+
+        btn.innerText = "🚀 Simpan & Kirim WhatsApp";
+        btn.disabled = false;
+
+        if (insertError) {
+          alert("Gagal menyimpan ke database: " + insertError.message);
+        } else {
+          const isiPesan = `Halo Bapak/Ibu, pemberitahuan resmi dari *Rutan Kelas IIB Kota Agung*.\n\nBarang titipan Anda yang dikirim oleh *${nama_pengirim}* telah *SUDAH DITERIMA* oleh warga binaan atas nama *${nama_napi}* pada jam *${jam}*.\n\nBerikut terlampir foto bukti serah terima langsung:\n${foto_bukti}\n\nTerima kasih.`;
+          const urlWhatsapp = `https://api.whatsapp.com/send?phone=${no_wa}&text=${encodeURIComponent(isiPesan)}`;
+
+          btn.style.backgroundColor = "#28a745";
+          btn.innerHTML = `<a href="${urlWhatsapp}" target="_blank" style="color:white; text-decoration:none; display:block; width:100%; height:100%;">✅ SUKSES! KLIK DI SINI UNTUK KIRIM WA</a>`;
+
+          alert("🎉 Data Berhasil Disimpan!");
+          formBarang.reset();
+          muatDataAdminBarang();
+        }
+      });
+
+      // HAPUS SATUAN
+      async function hapusBarang(id, namaNapi) {
+        if (!confirm(`Hapus data barang untuk ${namaNapi}?`)) return;
+        const { error } = await supabaseClient
+          .from("info_barang")
+          .delete()
+          .eq("id", id);
+        if (error) alert(error.message);
+        else {
+          alert("🗑️ Terhapus");
+          muatDataAdminBarang();
+        }
+      }
+
+      // LOGIKA BERITA
+      async function muatDataAdminBerita() {
+        const { data, error } = await supabaseClient
+          .from("info_berita")
+          .select("*")
+          .order("tanggal_rilis", { ascending: false });
+        const tbody = document.getElementById("tabel-admin-berita");
+        if (!tbody) return;
+        tbody.innerHTML = "";
+        if (error || !data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 15px; color: #666;">Belum ada berita.</td></tr>`;
+          return;
+        }
+        data.forEach((berita) => {
+          const tgl = new Date(berita.tanggal_rilis).toLocaleDateString(
+            "id-ID",
+            { day: "numeric", month: "short", year: "numeric" },
+          );
+          tbody.innerHTML += `<tr><td style="font-weight: 500; max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${berita.judul}</td><td style="color: #555;">📅 ${tgl}</td><td style="text-align: center;"><button onclick="hapusBerita('${berita.judul}')" class="btn-delete">🗑️ Hapus</button></td></tr>`;
+        });
+      }
+
+      const formBerita = document.getElementById("formBerita");
+      formBerita.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById("btnKirimBerita");
+        btn.innerText = "⏳ Memproses...";
+        btn.disabled = true;
+        const fileInput = document.getElementById("fileGambarBerita");
+        let url_gambar = "";
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const namaFileUnik = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
+          await supabaseClient.storage
+            .from("foto_berita")
+            .upload(namaFileUnik, file);
+          const { data: linkData } = supabaseClient.storage
+            .from("foto_berita")
+            .getPublicUrl(namaFileUnik);
+          url_gambar = linkData.publicUrl;
+        }
+        const { error } = await supabaseClient.from("info_berita").insert([
+          {
+            judul: document.getElementById("judulBerita").value,
+            url_gambar,
+            isi_berita: document.getElementById("isiBerita").value,
+            tanggal_rilis: new Date().toISOString().split("T")[0],
+          },
+        ]);
+        btn.innerText = "📢 Publikasikan Berita";
+        btn.disabled = false;
+        if (error) alert("Gagal: " + error.message);
+        else {
+          alert("📢 Sukses mempublikasikan berita!");
+          formBerita.reset();
+          muatDataAdminBerita();
+        }
+      });
+
+      async function hapusBerita(judulBerita) {
+        if (!confirm(`Hapus berita:\n"${judulBerita}"?`)) return;
+        const { error } = await supabaseClient
+          .from("info_berita")
+          .delete()
+          .eq("judul", judulBerita);
+        if (error) alert(error.message);
+        else {
+          alert("🗑️ Berita sukses dihapus.");
+          muatDataAdminBerita();
+        }
+      }
+    </script>
+  </body>
+</html>
