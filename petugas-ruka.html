@@ -8,14 +8,12 @@
   </head>
   <body>
     <div class="main-wrapper">
-      <!-- HALAMAN LOGIN (Awal) -->
-      <!-- Bagian Form Login yang Dimodifikasi -->
+      <!-- HALAMAN LOGIN -->
       <div
         id="halaman-login"
         class="login-card"
         style="max-width: 420px; margin: 80px auto; display: none"
       >
-        <!-- Header Card -->
         <div class="login-header">
           <div class="login-icon-shield">
             <img src="assets/logo.png" alt="" />
@@ -23,10 +21,7 @@
           <h2>Login Petugas</h2>
           <p>Rutan Kelas IIB Kota Agung</p>
         </div>
-
-        <!-- Form Login -->
         <form id="formLogin">
-          <!-- Input Email -->
           <div class="form-group-custom">
             <label for="loginEmail">Email Resmi</label>
             <div class="input-icon-wrapper">
@@ -40,8 +35,6 @@
               />
             </div>
           </div>
-
-          <!-- Input Password -->
           <div class="form-group-custom">
             <label for="loginPassword">Kata Sandi</label>
             <div class="input-icon-wrapper">
@@ -55,22 +48,17 @@
               />
             </div>
           </div>
-
-          <!-- Tombol Submit -->
           <button type="submit" id="btnLogin" class="btn-login-custom">
             Masuk ke Sistem
           </button>
         </form>
-
-        <!-- Footer Keamanan Sistem -->
         <div class="login-footer-text">
-          ⚠️ <strong>Sistem Terbuka Terbatas.</strong><br />
-          Akses hanya diizinkan untuk petugas Rutan Kota Agung yang berwenang.
-          Seluruh aktivitas login dicatat oleh sistem.
+          ⚠️ <strong>Sistem Terbuka Terbatas.</strong><br />Akses hanya
+          diizinkan untuk petugas Rutan Kota Agung yang berwenang.
         </div>
       </div>
 
-      <!-- HALAMAN PANEL ADMIN (Hanya tampil setelah login) -->
+      <!-- HALAMAN PANEL ADMIN -->
       <div id="halaman-admin" style="display: none">
         <div
           class="navbar-admin"
@@ -80,16 +68,19 @@
             align-items: center;
           "
         >
-          <span>🛡️ PANEL INPUT PETUGAS RUTAN KOTA AGUNG</span>
+          <span id="navbar-title">🛡️ PANEL ADMIN RUTAN KOTA AGUNG</span>
           <button class="btn-logout" onclick="aksiLogout()">🚪 Keluar</button>
         </div>
 
-        <!-- FORM TAMBAH AKUN ADMIN BARU (Hanya bisa diakses admin yang login) -->
-        <div class="card-form" style="border-left: 5px solid #28a745">
+        <!-- FORM TAMBAH AKUN -->
+        <div
+          class="card-form"
+          id="form-tambah-admin"
+          style="border-left: 5px solid #28a745"
+        >
           <h3>🔑 Tambah Akun Petugas Rutan Baru</h3>
           <p style="font-size: 13px; color: #666; margin-bottom: 15px">
-            Gunakan formulir ini untuk mendaftarkan akun petugas baru ke dalam
-            sistem.
+            Gunakan formulir ini untuk mendaftarkan akun petugas baru.
           </p>
           <form id="formTambahAdmin">
             <div class="form-group">
@@ -100,6 +91,14 @@
                 placeholder="Email Resmi Calon Petugas"
                 required
               />
+            </div>
+            <div class="form-group">
+              <label for="regRole">Pilih Jabatan</label>
+              <select id="regRole" class="form-control" required>
+                <option value="">-- Pilih Jabatan --</option>
+                <option value="admin">Administrator (Akses Penuh)</option>
+                <option value="operator">Operator (Input Barang Saja)</option>
+              </select>
             </div>
             <div class="form-group">
               <input
@@ -131,7 +130,7 @@
                 type="text"
                 id="namaNapi"
                 class="form-control"
-                placeholder="Nama Narapidana (WBP)"
+                placeholder="Nama Warga Binaan"
                 required
               />
             </div>
@@ -166,7 +165,7 @@
                   font-size: 14px;
                   color: #333;
                 "
-                >Foto Bukti Penerimaan Barang oleh WBP:</label
+                >Foto Bukti Penerimaan Barang oleh Warga Binaan:</label
               >
               <input
                 type="file"
@@ -187,13 +186,13 @@
         </div>
 
         <!-- FORM INPUT BERITA -->
-        <div class="card-form">
+        <div class="card-form" id="form-berita">
           <h3>📰 Input Berita Rutan Terbaru</h3>
-          <form id="formBerita">
+          <form id="formNewsletter">
             <div class="form-group">
               <input
                 type="text"
-                id="judulBerita"
+                id="judulNewsletter"
                 class="form-control"
                 placeholder="Judul Berita Terbaru"
                 required
@@ -208,18 +207,18 @@
                   font-size: 14px;
                   color: #333;
                 "
-                >Upload Foto Kegiatan dari Perangkat:</label
+                >Upload Foto:</label
               >
               <input
                 type="file"
-                id="fileGambarBerita"
+                id="fileGambarNewsletter"
                 class="form-control"
                 accept="image/*"
               />
             </div>
             <div class="form-group">
               <textarea
-                id="isiBerita"
+                id="isiNewsletter"
                 class="form-control"
                 placeholder="Tulis isi berita lengkap di sini..."
                 rows="5"
@@ -228,7 +227,7 @@
             </div>
             <button
               type="submit"
-              id="btnKirimBerita"
+              id="btnKirimNewsletter"
               class="btn-submit btn-green"
             >
               Publikasikan Berita
@@ -236,7 +235,7 @@
           </form>
         </div>
 
-        <!-- TABEL HISTORI BARANG -->
+        <!-- TABEL BARANG -->
         <div class="card-form">
           <div
             style="
@@ -251,6 +250,7 @@
             </h3>
             <button
               type="button"
+              id="btn-hapus-massal"
               onclick="hapusBarangTerpilih()"
               style="
                 background-color: #dc3545;
@@ -286,7 +286,7 @@
                   <th style="padding: 10px; text-align: center">Aksi</th>
                 </tr>
               </thead>
-              <tbody id="tabel-admin-barang">
+              <tbody id="tabel-admin-barcode">
                 <tr>
                   <td
                     colspan="7"
@@ -300,8 +300,8 @@
           </div>
         </div>
 
-        <!-- TABEL KELOLA BERITA -->
-        <div class="card-form">
+        <!-- TABEL BERITA -->
+        <div class="card-form" id="tabel-kelola-berita">
           <h3 style="font-size: 18px">📰 Kelola & Hapus Berita</h3>
           <div class="table-responsive">
             <table>
@@ -329,23 +329,18 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script>
-      const SUPABASE_URL = "https://tjzrsvwckvabnjxcypdz.supabase.co";
-      const SUPABASE_KEY = "sb_publishable_R6o0pLyEmXuqOOB80JnVuA_awEn_qBl";
+      var SUPABASE_URL = "https://tjzrsvwckvabnjxcypdz.supabase.co";
+      var SUPABASE_KEY = "sb_publishable_R6o0pLyEmXuqOOB80JnVuA_awEn_qBl";
 
-      // Klien utama untuk mengelola sesi admin (TANPA MENYIMPAN SESI DI BROWSER)
-      // Ini memaksa admin untuk selalu login ulang setiap kali halaman dibuka/di-refresh
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      var supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
         auth: {
-          persistSession: false, // Menonaktifkan penyimpanan sesi di localStorage
+          persistSession: false,
           autoRefreshToken: false,
           detectSessionInUrl: false,
         },
       });
-
-      // Klien sekunder khusus untuk mendaftarkan akun baru tanpa mengganggu sesi admin yang sedang aktif
-      const supabaseRegisterClient = supabase.createClient(
+      var supabaseRegisterClient = supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY,
         {
@@ -357,209 +352,218 @@
         },
       );
 
-      // ==========================================
-      // LOGIKA CEK STATUS LOGIN (AUTH)
-      // ==========================================
+      document.addEventListener("DOMContentLoaded", function () {
+        cekStatusSesi();
+      });
+
       async function cekStatusSesi() {
         try {
-          const {
-            data: { session },
-            error,
-          } = await supabaseClient.auth.getSession();
-
-          if (error) throw error;
-
-          if (session) {
-            document.getElementById("halaman-login").style.display = "none";
-            document.getElementById("halaman-admin").style.display = "block";
-
-            // Memuat data di latar belakang
-            muatDataAdminBarang().catch((err) =>
-              console.error("Gagal memuat barang:", err),
-            );
-            muatDataAdminBerita().catch((err) =>
-              console.error("Gagal memuat berita:", err),
-            );
+          var result = await supabaseClient.auth.getUser();
+          if (result.data.user) {
+            var userRole = result.data.user.user_metadata.role || "admin";
+            tampilkanHalamanAdmin(userRole);
+            muatDataAdminBarang();
+            muatDataAdminBerita();
           } else {
-            // Tampilkan halaman login jika tidak ada sesi aktif
             document.getElementById("halaman-login").style.display = "block";
             document.getElementById("halaman-admin").style.display = "none";
           }
         } catch (err) {
-          console.error("Gagal mengecek sesi:", err);
           document.getElementById("halaman-login").style.display = "block";
           document.getElementById("halaman-admin").style.display = "none";
         }
       }
 
-      // Jalankan pengecekan sesi saat halaman dibuka
-      cekStatusSesi();
+      function tampilkanHalamanAdmin(role) {
+        if (role === "operator") {
+          // ❌ SEMBUNYIKAN: form tambah akun, form berita, tabel berita
+          document.getElementById("form-tambah-admin").style.display = "none";
+          document.getElementById("form-berita").style.display = "none";
+          document.getElementById("tabel-kelola-berita").style.display = "none";
+          document.getElementById("navbar-title").textContent =
+            "🛡️ PANEL OPERATOR RUTAN KOTA AGUNG";
 
-      // Proses Form Login Petugas
-      const formLogin = document.getElementById("formLogin");
-      formLogin.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById("btnLogin");
-        btn.innerText = "⏳ Memverifikasi...";
-        btn.disabled = true;
+          // ✅ TIDAK ADA kode menyembunyikan btn-hapus-massal!
+          // ✅ Operator tetap bisa lihat tabel barang dan hapus data
+        } else {
+          // ADMIN: Tampilkan semua
+          document.getElementById("form-tambah-admin").style.display = "block";
+          document.getElementById("form-berita").style.display = "block";
+          document.getElementById("tabel-kelola-berita").style.display =
+            "block";
+          document.getElementById("navbar-title").textContent =
+            "🛡️ PANEL ADMIN RUTAN KOTA AGUNG";
+          // ✅ btn-hapus-massal tetap tampil
+        }
+        document.getElementById("halaman-login").style.display = "none";
+        document.getElementById("halaman-admin").style.display = "block";
+      }
 
-        const email = document.getElementById("loginEmail").value;
-        const password = document.getElementById("loginPassword").value;
-
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-          email: email,
-          password: password,
+      document
+        .getElementById("formLogin")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          var btn = document.getElementById("btnLogin");
+          btn.innerText = "⏳ Memverifikasi...";
+          btn.disabled = true;
+          var email = document.getElementById("loginEmail").value;
+          var password = document.getElementById("loginPassword").value;
+          supabaseClient.auth
+            .signInWithPassword({ email: email, password: password })
+            .then(function (result) {
+              btn.innerText = "Masuk ke Sistem";
+              btn.disabled = false;
+              if (result.error) {
+                alert("❌ Gagal Masuk: " + result.error.message);
+              } else {
+                var userRole = result.data.user.user_metadata.role || "admin";
+                alert(
+                  "🔑 Berhasil masuk sebagai " +
+                    (userRole === "admin" ? "Administrator" : "Operator") +
+                    "!",
+                );
+                document.getElementById("formLogin").reset();
+                tampilkanHalamanAdmin(userRole);
+                muatDataAdminBarang();
+                muatDataAdminBerita();
+              }
+            });
         });
 
-        btn.innerText = "Masuk ke Sistem";
-        btn.disabled = false;
-
-        if (error) {
-          alert("❌ Gagal Masuk: " + error.message);
-        } else {
-          alert("🔑 Berhasil masuk! Selamat bertugas.");
-          formLogin.reset();
-          cekStatusSesi();
-        }
-      });
-
-      // ==========================================
-      // LOGIKA REGISTRASI PETUGAS BARU (AMAN)
-      // ==========================================
-      const formTambahAdmin = document.getElementById("formTambahAdmin");
-      formTambahAdmin.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById("btnTambahAdmin");
-        btn.innerText = "⏳ Mendaftarkan...";
-        btn.disabled = true;
-
-        const email = document.getElementById("regEmail").value;
-        const password = document.getElementById("regPassword").value;
-
-        const { data, error } = await supabaseRegisterClient.auth.signUp({
-          email: email,
-          password: password,
+      document
+        .getElementById("formTambahAdmin")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          var btn = document.getElementById("btnTambahAdmin");
+          btn.innerText = "⏳ Mendaftarkan...";
+          btn.disabled = true;
+          var email = document.getElementById("regEmail").value;
+          var password = document.getElementById("regPassword").value;
+          var role = document.getElementById("regRole").value;
+          supabaseRegisterClient.auth
+            .signUp({
+              email: email,
+              password: password,
+              options: { data: { role: role } },
+            })
+            .then(function (result) {
+              btn.innerText = "➕ Daftarkan Petugas Baru";
+              btn.disabled = false;
+              if (result.error) {
+                alert("❌ Gagal: " + result.error.message);
+              } else {
+                alert("🎉 Sukses!\nEmail: " + email);
+                document.getElementById("formTambahAdmin").reset();
+              }
+            });
         });
 
-        btn.innerText = "➕ Daftarkan Petugas Baru";
-        btn.disabled = false;
-
-        if (error) {
-          alert("❌ Gagal membuat akun: " + error.message);
-        } else {
-          alert(
-            "🎉 Sukses mendaftarkan petugas baru ke Supabase Authentication!\nEmail: " +
-              email,
-          );
-          formTambahAdmin.reset();
-        }
-      });
-
-      // Fungsi Logout
-      async function aksiLogout() {
-        if (confirm("Apakah Anda ingin keluar dari panel admin?")) {
-          const { error } = await supabaseClient.auth.signOut();
-
-          if (error) {
-            alert("Gagal keluar: " + error.message);
-          } else {
-            alert("🔒 Anda telah keluar.");
-            window.location.href = "index.html";
-          }
+      function aksiLogout() {
+        if (confirm("Keluar dari panel admin?")) {
+          supabaseClient.auth.signOut().then(function () {
+            window.location.reload();
+          });
         }
       }
 
-      // FITUR KONTROL CHECKBOX
       function togglePilihSemua(master) {
-        const checkboxes = document.querySelectorAll(".cb-barang");
-        checkboxes.forEach((cb) => (cb.checked = master.checked));
+        var checkboxes = document.querySelectorAll(".cb-data");
+        for (var i = 0; i < checkboxes.length; i++) {
+          checkboxes[i].checked = master.checked;
+        }
       }
 
-      // PROSES HAPUS MASSAL
-      async function hapusBarangTerpilih() {
-        const checkboxesTerpilih =
-          document.querySelectorAll(".cb-barang:checked");
+      function hapusBarangTerpilih() {
+        var checkboxesTerpilih = document.querySelectorAll(".cb-data:checked");
         if (checkboxesTerpilih.length === 0) {
-          alert("❌ Silakan centang data yang ingin dihapus terlebih dahulu!");
+          alert("❌ Centang data dulu!");
           return;
         }
-
-        const daftarId = Array.from(checkboxesTerpilih).map((cb) => cb.value);
-
-        if (
-          !confirm(
-            `Apakah Anda yakin ingin menghapus ${daftarId.length} data terpilih?`,
-          )
-        ) {
-          return;
+        var daftarId = [];
+        for (var i = 0; i < checkboxesTerpilih.length; i++) {
+          daftarId.push(checkboxesTerpilih[i].value);
         }
-
-        try {
-          const { error } = await supabaseClient
-            .from("info_barang")
-            .delete()
-            .in("id", daftarId);
-
-          if (error) throw error;
-
-          alert(`🗑️ Sukses! Berhasil menghapus ${daftarId.length} data.`);
-          document.getElementById("pilih-semua").checked = false;
-          muatDataAdminBarang();
-        } catch (err) {
-          alert("Gagal menghapus data: " + err.message);
-        }
-      }
-
-      // AMBIL DATA KELOLA BARANG
-      async function muatDataAdminBarang() {
-        const { data, error } = await supabaseClient
+        if (!confirm("Hapus " + daftarId.length + " data?")) return;
+        supabaseClient
           .from("info_barang")
-          .select("*");
-        const tbody = document.getElementById("tabel-admin-barang");
-        if (!tbody) return;
-        tbody.innerHTML = "";
-
-        if (error) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 15px; color: red;">Gagal memuat data.</td></tr>`;
-          return;
-        }
-
-        if (!data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 15px; color: #666;">Belum ada data barang.</td></tr>`;
-          return;
-        }
-
-        data.sort((a, b) => {
-          const tglA = a.tanggal_diterima || a.tanggal;
-          const tglB = b.tanggal_diterima || b.tanggal;
-          return new Date(tglB) - new Date(tglA);
-        });
-
-        data.forEach((barang) => {
-          const statusHtml = `<span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 13px; font-weight: bold;">Selesai</span>`;
-          const jamTampil = barang.jam_diterima || barang.jam || "-";
-          const waTampil = barang.no_wa_keluarga || barang.no_hp || "-";
-          const tglTampil = barang.tanggal_diterima || barang.tanggal || "-";
-
-          const row = `
-  <tr style="border-bottom: 1px solid #eee;">
-      <td style="padding: 10px; text-align: center;">
-          <input type="checkbox" class="cb-barang" value="${barang.id}" style="transform: scale(1.2); cursor: pointer;">
-      </td>
-      <td style="padding: 10px;">${tglTampil}<br><small style="color:#666">${jamTampil}</small></td>
-      <td style="padding: 10px;">${barang.nama_pengirim || "-"}</td>
-      <td style="padding: 10px; font-weight: bold;">${barang.nama_napi || "-"}</td>
-      <td style="padding: 10px;">${waTampil}</td>
-      <td style="padding: 10px;">${statusHtml}</td>
-      <td style="padding: 10px; text-align: center;">
-          <button onclick="hapusBarang('${barang.id}', '${barang.nama_napi}')" style="background-color: #ffc107; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Hapus</button>
-      </td>
-  </tr>
-`;
-          tbody.innerHTML += row;
-        });
+          .delete()
+          .in("id", daftarId)
+          .then(function (result) {
+            if (result.error) {
+              alert("Gagal: " + result.error.message);
+            } else {
+              alert("🗑️ Terhapus!");
+              document.getElementById("pilih-semua").checked = false;
+              muatDataAdminBarang();
+            }
+          });
       }
 
+      function muatDataAdminBarang() {
+        var tbody = document.getElementById("tabel-admin-barcode");
+        if (!tbody) return;
+        supabaseClient
+          .from("info_barang")
+          .select("*")
+          .then(function (result) {
+            if (result.error) {
+              tbody.innerHTML =
+                '<tr><td colspan="7" style="text-align:center; padding: 15px; color: red;">Gagal.</td></tr>';
+              return;
+            }
+            if (!result.data || result.data.length === 0) {
+              tbody.innerHTML =
+                '<tr><td colspan="7" style="text-align:center; padding: 15px; color: #666;">Belum ada data.</td></tr>';
+              return;
+            }
+            result.data.sort(function (a, b) {
+              return (
+                new Date(b.tanggal_diterima) - new Date(a.tanggal_diterima)
+              );
+            });
+            var html = "";
+            for (var i = 0; i < result.data.length; i++) {
+              var b = result.data[i];
+              html += '<tr style="border-bottom: 1px solid #eee;">';
+              html +=
+                '<td style="padding: 10px; text-align: center;"><input type="checkbox" class="cb-data" value="' +
+                b.id +
+                '" style="transform: scale(1.2);"></td>';
+              html +=
+                '<td style="padding: 10px;">' +
+                (b.tanggal_diterima || "-") +
+                '<br><small style="color:#666">' +
+                (b.jam_diterima || "-") +
+                "</small></td>";
+              html +=
+                '<td style="padding: 10px;">' +
+                (b.nama_pengirim || "-") +
+                "</td>";
+              html +=
+                '<td style="padding: 10px; font-weight: bold;">' +
+                (b.nama_napi || "-") +
+                "</td>";
+              html +=
+                '<td style="padding: 10px;">' +
+                (b.no_wa_keluarga || "-") +
+                "</td>";
+              html +=
+                '<td style="padding: 10px;"><span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 8px; border-radius: 4px; font-size: 13px; font-weight: bold;">Selesai</span></td>';
+              html +=
+                '<td style="padding: 10px; text-align: center;"><button onclick="hapusBarang(\'' +
+                b.id +
+                "', '" +
+                (b.nama_napi || "") +
+                '\')" style="background-color: #ffc107; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Hapus</button></td>';
+              html += "</tr>";
+            }
+            tbody.innerHTML = html;
+          });
+      }
+
+      // ==========================================
+      // INPUT BARANG + KIRIM WA (PAKAI ASYNC/AWAIT)
+      // ==========================================
       // PROSES FORM BARANG + WA
       const formBarang = document.getElementById("formBarang");
       formBarang.addEventListener("submit", async (e) => {
@@ -624,7 +628,7 @@
         if (insertError) {
           alert("Gagal menyimpan ke database: " + insertError.message);
         } else {
-          const isiPesan = `Halo Bapak/Ibu, pemberitahuan resmi dari *Rutan Kelas IIB Kota Agung*.\n\nBarang titipan Anda yang dikirim oleh *${nama_pengirim}* telah *SUDAH DITERIMA* oleh warga binaan atas nama *${nama_napi}* pada jam *${jam}*.\n\nBerikut terlampir foto bukti serah terima langsung:\n${foto_bukti}\n\nTerima kasih.`;
+          const isiPesan = `Halo Bapak/Ibu, pemberitahuan resmi dari *Rutan Kelas IIB Kota Agung*.\n\nBarang titipan Anda yang dikirim oleh *${nama_pengirim}* *SUDAH DITERIMA* oleh warga binaan atas nama *${nama_napi}* pada jam *${jam}*.\n\nBerikut terlampir foto bukti serah terima langsung:\n${foto_bukti}\n\nTerima kasih.`;
           const urlWhatsapp = `https://api.whatsapp.com/send?phone=${no_wa}&text=${encodeURIComponent(isiPesan)}`;
 
           btn.style.backgroundColor = "#28a745";
@@ -636,90 +640,120 @@
         }
       });
 
-      // HAPUS SATUAN
-      async function hapusBarang(id, namaNapi) {
-        if (!confirm(`Hapus data barang untuk ${namaNapi}?`)) return;
-        const { error } = await supabaseClient
+      function hapusBarang(id, namaNapi) {
+        if (!confirm("Hapus " + namaNapi + "?")) return;
+        supabaseClient
           .from("info_barang")
           .delete()
-          .eq("id", id);
-        if (error) alert(error.message);
-        else {
-          alert("🗑️ Terhapus");
-          muatDataAdminBarang();
-        }
+          .eq("id", id)
+          .then(function (result) {
+            if (result.error) {
+              alert(result.error.message);
+            } else {
+              alert("🗑️ Terhapus");
+              muatDataAdminBarang();
+            }
+          });
       }
 
-      // LOGIKA BERITA
-      async function muatDataAdminBerita() {
-        const { data, error } = await supabaseClient
+      // ==========================================
+      // KELOLA BERITA
+      // ==========================================
+      function muatDataAdminBerita() {
+        var tbody = document.getElementById("tabel-admin-berita");
+        if (!tbody) return;
+        supabaseClient
           .from("info_berita")
           .select("*")
-          .order("tanggal_rilis", { ascending: false });
-        const tbody = document.getElementById("tabel-admin-berita");
-        if (!tbody) return;
-        tbody.innerHTML = "";
-        if (error || !data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 15px; color: #666;">Belum ada berita.</td></tr>`;
-          return;
-        }
-        data.forEach((berita) => {
-          const tgl = new Date(berita.tanggal_rilis).toLocaleDateString(
-            "id-ID",
-            { day: "numeric", month: "short", year: "numeric" },
-          );
-          tbody.innerHTML += `<tr><td style="font-weight: 500; max-width: 400px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${berita.judul}</td><td style="color: #555;">📅 ${tgl}</td><td style="text-align: center;"><button onclick="hapusBerita('${berita.judul}')" class="btn-delete">🗑️ Hapus</button></td></tr>`;
-        });
+          .order("tanggal_rilis", { ascending: false })
+          .then(function (result) {
+            if (result.error || !result.data || result.data.length === 0) {
+              tbody.innerHTML =
+                '<tr><td colspan="3" style="text-align:center; padding: 15px; color: #666;">Belum ada berita.</td></tr>';
+              return;
+            }
+            var html = "";
+            for (var i = 0; i < result.data.length; i++) {
+              var n = result.data[i];
+              var tgl = new Date(n.tanggal_rilis).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              });
+              html += "<tr>";
+              html += '<td style="font-weight: 500;">' + n.judul + "</td>";
+              html += '<td style="color: #555;">📅 ' + tgl + "</td>";
+              html +=
+                '<td style="text-align: center;"><button onclick="hapusNewsletter(\'' +
+                n.judul +
+                '\')" style="background:#dc3545; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Hapus</button></td>';
+              html += "</tr>";
+            }
+            tbody.innerHTML = html;
+          });
       }
 
-      const formBerita = document.getElementById("formBerita");
-      formBerita.addEventListener("submit", async (e) => {
+      const formNewsletter = document.getElementById("formNewsletter");
+      formNewsletter.addEventListener("submit", async function (e) {
         e.preventDefault();
-        const btn = document.getElementById("btnKirimBerita");
+        var btn = document.getElementById("btnKirimNewsletter");
         btn.innerText = "⏳ Memproses...";
         btn.disabled = true;
-        const fileInput = document.getElementById("fileGambarBerita");
-        let url_gambar = "";
+
+        var fileInput = document.getElementById("fileGambarNewsletter");
+        var url_gambar = "";
+
         if (fileInput.files.length > 0) {
-          const file = fileInput.files[0];
-          const namaFileUnik = `${Date.now()}_${file.name.replace(/\s+/g, "_")}`;
-          await supabaseClient.storage
+          var file = fileInput.files[0];
+          var namaFileUnik = Date.now() + "_" + file.name.replace(/\s+/g, "_");
+
+          var uploadResult = await supabaseClient.storage
             .from("foto_berita")
             .upload(namaFileUnik, file);
-          const { data: linkData } = supabaseClient.storage
-            .from("foto_berita")
-            .getPublicUrl(namaFileUnik);
-          url_gambar = linkData.publicUrl;
+
+          if (!uploadResult.error) {
+            var linkData = supabaseClient.storage
+              .from("foto_berita")
+              .getPublicUrl(namaFileUnik);
+            url_gambar = linkData.publicUrl;
+          }
         }
-        const { error } = await supabaseClient.from("info_berita").insert([
+
+        var insertResult = await supabaseClient.from("info_berita").insert([
           {
-            judul: document.getElementById("judulBerita").value,
-            url_gambar,
-            isi_berita: document.getElementById("isiBerita").value,
+            judul: document.getElementById("judulNewsletter").value,
+            url_gambar: url_gambar,
+            isi_berita: document.getElementById("isiNewsletter").value,
             tanggal_rilis: new Date().toISOString().split("T")[0],
           },
         ]);
-        btn.innerText = "📢 Publikasikan Berita";
+
+        btn.innerText = "Publikasikan Berita";
         btn.disabled = false;
-        if (error) alert("Gagal: " + error.message);
-        else {
-          alert("📢 Sukses mempublikasikan berita!");
-          formBerita.reset();
+
+        if (insertResult.error) {
+          alert("Gagal: " + insertResult.error.message);
+        } else {
+          alert("📢 Berhasil!");
+          formNewsletter.reset();
           muatDataAdminBerita();
         }
       });
 
-      async function hapusBerita(judulBerita) {
-        if (!confirm(`Hapus berita:\n"${judulBerita}"?`)) return;
-        const { error } = await supabaseClient
+      function hapusNewsletter(judul) {
+        if (!confirm('Hapus "' + judul + '"?')) return;
+        supabaseClient
           .from("info_berita")
           .delete()
-          .eq("judul", judulBerita);
-        if (error) alert(error.message);
-        else {
-          alert("🗑️ Berita sukses dihapus.");
-          muatDataAdminBerita();
-        }
+          .eq("judul", judul)
+          .then(function (result) {
+            if (result.error) {
+              alert(result.error.message);
+            } else {
+              alert("🗑️ Terhapus");
+              muatDataAdminBerita();
+            }
+          });
       }
     </script>
   </body>
