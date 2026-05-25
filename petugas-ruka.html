@@ -693,6 +693,9 @@
           });
       }
 
+      // ==========================================
+      // FORM NEWSLETTER BERITA (SUDAH FIX NULL)
+      // ==========================================
       const formNewsletter = document.getElementById("formNewsletter");
       formNewsletter.addEventListener("submit", async function (e) {
         e.preventDefault();
@@ -701,7 +704,7 @@
         btn.disabled = true;
 
         var fileInput = document.getElementById("fileGambarNewsletter");
-        var url_gambar = "";
+        var linkGambarFinal = ""; // Gunakan nama variabel unik agar aman
 
         if (fileInput.files.length > 0) {
           var file = fileInput.files[0];
@@ -715,14 +718,19 @@
             var linkData = supabaseClient.storage
               .from("foto_berita")
               .getPublicUrl(namaFileUnik);
-            url_gambar = linkData.publicUrl;
+
+            // 🟢 PERBAIKAN: Isi variabel utama tanpa menggunakan kata kunci "var" lagi
+            linkGambarFinal = linkData.data.publicUrl || linkData.publicUrl;
+          } else {
+            console.error("Gagal Upload Storage:", uploadResult.error.message);
           }
         }
 
+        // Jalankan perintah insert dengan data yang sudah dipastikan masuk
         var insertResult = await supabaseClient.from("info_berita").insert([
           {
             judul: document.getElementById("judulNewsletter").value,
-            url_gambar: url_gambar,
+            url_gambar: linkGambarFinal, // 🟢 Mengirim link asli yang sukses ditarik dari storage
             isi_berita: document.getElementById("isiNewsletter").value,
             tanggal_rilis: new Date().toISOString().split("T")[0],
           },
@@ -732,14 +740,15 @@
         btn.disabled = false;
 
         if (insertResult.error) {
-          alert("Gagal: " + insertResult.error.message);
+          alert("Gagal menyimpan berita: " + insertResult.error.message);
+          console.error("Detail Error Database:", insertResult.error);
         } else {
-          alert("📢 Berhasil!");
+          alert("📢 Berhasil mempublikasikan berita baru!");
           formNewsletter.reset();
-          muatDataAdminBerita();
+          muatDataAdminBerita(); // Muat ulang tabel admin
         }
       });
-
+      
       function hapusNewsletter(judul) {
         if (!confirm('Hapus "' + judul + '"?')) return;
         supabaseClient
